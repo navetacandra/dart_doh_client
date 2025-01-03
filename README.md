@@ -1,9 +1,7 @@
-# doh_client
-
+# simple_doh_client
 A simple DNS over Https Client.
 
 ## Example
-
 An example usage.
 ```dart
 import 'package:doh_client/doh_client.dart';

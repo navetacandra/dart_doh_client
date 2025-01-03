@@ -1,4 +1,4 @@
-name: doh_client
+name: simple_doh_client
 description: A simple DNS over Https Client.
 version: 0.0.1
 repository: https://github.com/navetacandra/dart_doh_client
