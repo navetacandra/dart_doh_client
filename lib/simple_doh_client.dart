@@ -29,11 +29,7 @@ Future<void> _ensureDNSAvailable(String _dohUrl) async {
 }
 
 class DoHClient {
-  final DoHProvider provider;
-
-  DoHClient({this.provider = DoHProvider.cloudflare});
-
-  static Future<List<String>?> staticLookup(
+  static Future<List<String>?> lookup(
     String hostname, {
     DoHProvider provider = DoHProvider.cloudflare,
   }) async {
@@ -57,70 +53,127 @@ class DoHClient {
     return null;
   }
 
-  Future<List<String>?> lookup(String hostname) {
-    return DoHClient.staticLookup(hostname, provider: provider);
-  }
-
-  Future<String?> _resolveDomain(String hostname) async {
-    final lookupResult = await lookup(hostname);
-    return lookupResult?.first;
-  }
-
-  Future<http.Response> head(Uri url, {Map<String, String>? headers}) async {
-    final ipAddress = await _resolveDomain(url.host);
+  static Future<http.Response> head(
+    Uri url, {
+    Map<String, String>? headers,
+    DoHProvider provider = DoHProvider.cloudflare,
+  }) async {
+    final ipAddress = (await lookup(url.host, provider: provider))?.first;
     if (ipAddress == null) throw Exception("Cannot resolve hostname.");
 
-    final _headers = {...(headers ?? {})};
-    _headers['Host'] = url.host;
-
-    return http.head(Uri.http(ipAddress, url.path, url.queryParameters), headers: _headers);
+    final _headers = {
+      ...(headers ?? {}),
+      'Host': url.host,
+    };
+    return http.head(
+      Uri.http(ipAddress, url.path, url.queryParameters),
+      headers: _headers,
+    );
   }
 
-  Future<http.Response> get(Uri url, {Map<String, String>? headers}) async {
-    final ipAddress = await _resolveDomain(url.host);
+  static Future<http.Response> get(
+    Uri url, {
+    Map<String, String>? headers,
+    DoHProvider provider = DoHProvider.cloudflare,
+  }) async {
+    final ipAddress = (await lookup(url.host, provider: provider))?.first;
     if (ipAddress == null) throw Exception("Cannot resolve hostname.");
 
-    final _headers = {...(headers ?? {})};
-    _headers['Host'] = url.host;
-    return http.get(Uri.http(ipAddress, url.path, url.queryParameters), headers: _headers);
+    final _headers = {
+      ...(headers ?? {}),
+      'Host': url.host,
+    };
+    return http.get(
+      Uri.http(ipAddress, url.path, url.queryParameters),
+      headers: _headers,
+    );
   }
 
-  Future<http.Response> post(Uri url, {Map<String, String>? headers, Object? body, Encoding? encoding}) async {
-    final ipAddress = await _resolveDomain(url.host);
+  static Future<http.Response> post(
+    Uri url, {
+    DoHProvider provider = DoHProvider.cloudflare,
+    Map<String, String>? headers,
+    Object? body,
+    Encoding? encoding,
+  }) async {
+    final ipAddress = (await lookup(url.host, provider: provider))?.first;
     if (ipAddress == null) throw Exception("Cannot resolve hostname.");
 
-    final _headers = {...(headers ?? {})};
-    _headers['Host'] = url.host;
-    return http.post(Uri.http(ipAddress, url.path, url.queryParameters), headers: _headers, body: body, encoding: encoding);
+    final _headers = {
+      ...(headers ?? {}),
+      'Host': url.host,
+    };
+    return http.post(
+      Uri.http(ipAddress, url.path, url.queryParameters),
+      headers: _headers,
+      body: body,
+      encoding: encoding,
+    );
   }
 
-  Future<http.Response> put(Uri url, {Map<String, String>? headers, Object? body, Encoding? encoding}) async {
-    final ipAddress = await _resolveDomain(url.host);
+  static Future<http.Response> put(
+    Uri url, {
+    DoHProvider provider = DoHProvider.cloudflare,
+    Map<String, String>? headers,
+    Object? body,
+    Encoding? encoding,
+  }) async {
+    final ipAddress = (await lookup(url.host, provider: provider))?.first;
     if (ipAddress == null) throw Exception("Cannot resolve hostname.");
 
-    final _headers = {...(headers ?? {})};
-    _headers['Host'] = url.host;
-
-    return http.put(Uri.http(ipAddress, url.path, url.queryParameters), headers: _headers, body: body, encoding: encoding);
+    final _headers = {
+      ...(headers ?? {}),
+      'Host': url.host,
+    };
+    return http.put(
+      Uri.http(ipAddress, url.path, url.queryParameters),
+      headers: _headers,
+      body: body,
+      encoding: encoding,
+    );
   }
 
-  Future<http.Response> patch(Uri url, {Map<String, String>? headers, Object? body, Encoding? encoding}) async {
-    final ipAddress = await _resolveDomain(url.host);
+  static Future<http.Response> patch(
+    Uri url, {
+    DoHProvider provider = DoHProvider.cloudflare,
+    Map<String, String>? headers,
+    Object? body,
+    Encoding? encoding,
+  }) async {
+    final ipAddress = (await lookup(url.host, provider: provider))?.first;
     if (ipAddress == null) throw Exception("Cannot resolve hostname.");
 
-    final _headers = {...(headers ?? {})};
-    _headers['Host'] = url.host;
-
-    return http.patch(Uri.http(ipAddress, url.path, url.queryParameters), headers: _headers, body: body, encoding: encoding);
+    final _headers = {
+      ...(headers ?? {}),
+      'Host': url.host,
+    };
+    return http.patch(
+      Uri.http(ipAddress, url.path, url.queryParameters),
+      headers: _headers,
+      body: body,
+      encoding: encoding,
+    );
   }
 
-  Future<http.Response> delete(Uri url, {Map<String, String>? headers, Object? body, Encoding? encoding}) async {
-    final ipAddress = await _resolveDomain(url.host);
+  static Future<http.Response> delete(
+    Uri url, {
+    DoHProvider provider = DoHProvider.cloudflare,
+    Map<String, String>? headers,
+    Object? body,
+    Encoding? encoding,
+  }) async {
+    final ipAddress = (await lookup(url.host, provider: provider))?.first;
     if (ipAddress == null) throw Exception("Cannot resolve hostname.");
 
-    final _headers = {...(headers ?? {})};
-    _headers['Host'] = url.host;
-
-    return http.delete(Uri.http(ipAddress, url.path, url.queryParameters), headers: _headers, body: body, encoding: encoding);
+    final _headers = {
+      ...(headers ?? {}),
+      'Host': url.host,
+    };
+    return http.delete(
+      Uri.http(ipAddress, url.path, url.queryParameters),
+      headers: _headers,
+      body: body,
+      encoding: encoding,
+    );
   }
 }
